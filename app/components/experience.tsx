@@ -26,12 +26,12 @@ const experiences: Experience[] = [
       "Committee Member - Cohort Leader Incubation Program",
       "Mentor - Junior Business Staff"
     ],
-    technologies: ["Teamwork", "Problem Solving", "Decision-Making", "Communication", "Management"]
+    technologies: ["Teamwork", "Problem Solving", "Decision Making", "Communication", "Management"]
   },
   {
     title: "Professional MC and Guest Speaker",
     company: "Faculty of Computer Science",
-    date: "Jul 2023 – Present",
+    date: "Jul 2023 - August 2024",
     description: [
       "MC - EQUALOGIC Webinar",
       "MC - Entrepreneur Sharing Center",
@@ -80,20 +80,22 @@ export default function ExperienceSection() {
                 `}
                 onClick={() => setSelectedExperience(exp)}
               >
-                <div className="flex items-center mb-2">
-                  <Briefcase className="mr-3 w-6 h-6" />
-                  <h3 className="text-xl font-semibold">{exp.title}</h3>
-                </div>
-                <div className="flex items-center text-sm mb-2">
-                  <Calendar className="mr-3 w-4 h-4" />
-                  <div className="text-sm text-[#EEEEEE]">
-                    <p>{exp.company}</p>
-                    <p className="text-[#EEEEEE]/70">{exp.date}</p>
+                  <div className="flex items-center mb-2">
+                    <Briefcase className="mr-3 w-6 h-6" />
+                     <h3 className={`text-xl font-semibold ${selectedExperience === exp ? 'text-[#222831]' : 'text-[#00ADB5]'}`}>
+                        {exp.title}
+                      </h3>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                  <div className="flex items-center text-sm mb-2">
+                    <Calendar className="mr-3 w-6 h-6" />
+                    <div className="text-sm text-[#EEEEEE]">
+                      <p>{exp.company}</p>
+                      <p className="text-[#EEEEEE]/70">{exp.date}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
 
           {/* Experience Details */}
           <motion.div 
