@@ -1,7 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, Calendar, Code } from 'lucide-react';
+import { Briefcase, Calendar, Code, ChevronDown } from 'lucide-react';
 
 // Experience data type
 interface Experience {
@@ -16,7 +16,7 @@ interface Experience {
 const experiences: Experience[] = [
   {
     title: "Expert Staff of the Business Department",
-    company: "Himpunan Mahasiswa Departemen Teknik Informatika",
+    company: "HMDTIF",
     date: "March 2024 - December 2024",
     description: [
       "Secretary Business Expo for Entrepreneur",
@@ -43,66 +43,75 @@ const experiences: Experience[] = [
 
 export default function ExperienceSection() {
   const [selectedExperience, setSelectedExperience] = useState<Experience | null>(experiences[0]);
+  const [mobileExpanded, setMobileExpanded] = useState<number | null>(0);
+
+  const toggleMobileExpansion = (index: number) => {
+    setMobileExpanded(mobileExpanded === index ? null : index);
+    setSelectedExperience(experiences[index]);
+  };
 
   return (
     <section 
       id="experience" 
-      className="w-full min-h-screen flex items-center justify-center bg-[#222831] p-6"
+      className="w-full min-h-screen flex items-center justify-center bg-[#222831] px-4 py-8 sm:px-6 lg:px-8"
     >
-      <div className="max-w-5xl w-full">
+      <div className="max-w-7xl w-full">
         <motion.h2 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl font-bold mb-12 text-center text-[#00ADB5]"
+          className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-12 text-center text-[#00ADB5]"
         >
           Professional Experience
         </motion.h2>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        {/* Desktop and Tablet Layout */}
+        <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Experience List */}
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-4 lg:space-y-6"
           >
             {experiences.map((exp, index) => (
               <motion.div 
                 key={index}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 className={`
-                  cursor-pointer p-6 rounded-xl transition-all duration-300
+                  cursor-pointer p-4 lg:p-6 rounded-xl transition-all duration-300
                   ${selectedExperience === exp 
                     ? 'bg-[#00ADB5] text-[#222831]' 
                     : 'bg-[#393E46] text-[#EEEEEE] hover:bg-[#00ADB5]/20'}
                 `}
                 onClick={() => setSelectedExperience(exp)}
               >
-                  <div className="flex items-center mb-2">
-                    <Briefcase className="mr-3 w-6 h-6" />
-                     <h3 className={`text-xl font-semibold ${selectedExperience === exp ? 'text-[#222831]' : 'text-[#00ADB5]'}`}>
-                        {exp.title}
-                      </h3>
+                <div className="flex items-start mb-3">
+                  <Briefcase className="mr-3 w-5 h-5 lg:w-6 lg:h-6 mt-0.5 flex-shrink-0" />
+                  <h3 className={`text-lg lg:text-xl font-semibold leading-tight ${selectedExperience === exp ? 'text-[#222831]' : 'text-[#00ADB5]'}`}>
+                    {exp.title}
+                  </h3>
+                </div>
+                <div className="flex items-start ml-8">
+                  <Calendar className="mr-3 w-4 h-4 lg:w-5 lg:h-5 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm">
+                    <p className="font-medium">{exp.company}</p>
+                    <p className={`${selectedExperience === exp ? 'text-[#222831]/70' : 'text-[#EEEEEE]/70'}`}>
+                      {exp.date}
+                    </p>
                   </div>
-                  <div className="flex items-center text-sm mb-2">
-                    <Calendar className="mr-3 w-6 h-6" />
-                    <div className="text-sm text-[#EEEEEE]">
-                      <p>{exp.company}</p>
-                      <p className="text-[#EEEEEE]/70">{exp.date}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
 
           {/* Experience Details */}
           <motion.div 
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-[#393E46] rounded-xl p-8"
+            className="bg-[#393E46] rounded-xl p-6 lg:p-8 lg:sticky lg:top-8"
           >
             <AnimatePresence mode="wait">
               {selectedExperience ? (
@@ -113,19 +122,19 @@ export default function ExperienceSection() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h3 className="text-2xl font-bold text-[#00ADB5] mb-4">
+                  <h3 className="text-xl lg:text-2xl font-bold text-[#00ADB5] mb-4">
                     {selectedExperience.title}
                   </h3>
-                  <div className="text-sm text-[#EEEEEE] mb-4">
-                    <p>{selectedExperience.company}</p>
+                  <div className="text-sm text-[#EEEEEE] mb-6">
+                    <p className="font-medium">{selectedExperience.company}</p>
                     <p className="text-[#EEEEEE]/70">{selectedExperience.date}</p>
                   </div>
                   
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-3 mb-6">
                     {selectedExperience.description.map((desc, index) => (
                       <li key={index} className="flex items-start">
-                        <Code className="mr-2 mt-1 w-4 h-4 text-[#00ADB5]" />
-                        <span>{desc}</span>
+                        <Code className="mr-3 mt-1 w-4 h-4 text-[#00ADB5] flex-shrink-0" />
+                        <span className="text-[#EEEEEE] leading-relaxed">{desc}</span>
                       </li>
                     ))}
                   </ul>
@@ -135,7 +144,7 @@ export default function ExperienceSection() {
                       {selectedExperience.technologies.map((tech, index) => (
                         <span 
                           key={index} 
-                          className="bg-[#00ADB5]/20 text-[#00ADB5] px-3 py-1 rounded-full text-xs"
+                          className="bg-[#00ADB5]/20 text-[#00ADB5] px-3 py-1 rounded-full text-xs font-medium"
                         >
                           {tech}
                         </span>
@@ -150,6 +159,78 @@ export default function ExperienceSection() {
               )}
             </AnimatePresence>
           </motion.div>
+        </div>
+
+        {/* Mobile Layout - Accordion Style */}
+        <div className="md:hidden space-y-4">
+          {experiences.map((exp, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="bg-[#393E46] rounded-xl overflow-hidden"
+            >
+              {/* Accordion Header */}
+              <div 
+                className="p-4 cursor-pointer flex items-center justify-between"
+                onClick={() => toggleMobileExpansion(index)}
+              >
+                <div className="flex items-start flex-1">
+                  <Briefcase className="mr-3 w-5 h-5 mt-0.5 text-[#00ADB5] flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-[#00ADB5] leading-tight mb-1">
+                      {exp.title}
+                    </h3>
+                    <p className="text-sm text-[#EEEEEE] truncate">{exp.company}</p>
+                    <p className="text-xs text-[#EEEEEE]/70">{exp.date}</p>
+                  </div>
+                </div>
+                <motion.div
+                  animate={{ rotate: mobileExpanded === index ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <ChevronDown className="w-5 h-5 text-[#00ADB5]" />
+                </motion.div>
+              </div>
+
+              {/* Accordion Content */}
+              <AnimatePresence>
+                {mobileExpanded === index && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="px-4 pb-4 border-t border-[#222831]/20">
+                      <ul className="space-y-2 mt-4 mb-4">
+                        {exp.description.map((desc, descIndex) => (
+                          <li key={descIndex} className="flex items-start">
+                            <Code className="mr-2 mt-1 w-3 h-3 text-[#00ADB5] flex-shrink-0" />
+                            <span className="text-sm text-[#EEEEEE] leading-relaxed">{desc}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      {exp.technologies && (
+                        <div className="flex flex-wrap gap-2">
+                          {exp.technologies.map((tech, techIndex) => (
+                            <span 
+                              key={techIndex} 
+                              className="bg-[#00ADB5]/20 text-[#00ADB5] px-2 py-1 rounded-full text-xs font-medium"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

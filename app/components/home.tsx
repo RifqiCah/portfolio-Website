@@ -2,29 +2,35 @@
 
 export default function HomeSection() {
   return (
-    <section id="home" className="w-full h-screen flex flex-col items-center justify-center p-6">
-      <div className="h-full container mx-auto flex flex-col md:flex-row items-center justify-between">
+    <section id="home" className="w-full min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+      <div className="container mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 max-w-7xl">
         
         {/* Kiri - Teks */}
-        <div className="w-full md:w-1/2 text-center md:text-left ml-24">
+        <div className="w-full lg:w-1/2 text-center lg:text-left px-4 sm:px-6 lg:px-8 xl:px-12">
           <h1
-            className="text-4xl font-bold text-center md:text-left"
+            className="text-3xl sm:text-4xl lg:text-4xl xl:text-4xl font-bold mb-4 lg:mb-6"
             style={{ color: "#00ADB5" }}
           >
-            Hi, I'm Fiki! 👋
+            Hi, I'm Fiki!
           </h1>
 
           <p
-            className="text-lg mt-4"
+            className="text-base sm:text-lg lg:text-xl xl:text-xl mb-6 lg:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0"
             style={{ color: "#EEEEEE" }}
           >
             I am an undergraduate student in Informatics Engineering at Universitas Brawijaya with a deep interest in AI/ML Engineer, Data Science and Full Stack Enthusiast
           </p>
 
-          <div className="w-full md:w-1/2 flex flex-row gap-2 justify-center md:justify-start ">
-                          {/* Ikon LinkedIn */}
-            <a href="https://www.linkedin.com/in/rifqicahyono" target="_blank" rel="noopener noreferrer">
-              <div className="w-8 h-8 mt-4 text-blue-500 cursor-pointer">
+          {/* Social Media Icons */}
+          <div className="flex flex-row gap-3 sm:gap-4 justify-center lg:justify-start items-center">
+            {/* Ikon LinkedIn */}
+            <a 
+              href="https://www.linkedin.com/in/rifqicahyono" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group transition-transform duration-300 hover:scale-110"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-blue-500 cursor-pointer group-hover:text-blue-400 transition-colors duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 448 512"
@@ -35,9 +41,15 @@ export default function HomeSection() {
                 </svg>
               </div>
             </a>
+
             {/* Ikon GitHub */}
-            <a href="https://github.com/RifqiCah" target="_blank" rel="noopener noreferrer">
-              <div className="w-9 h-8 mt-4 text-white-500">
+            <a 
+              href="https://github.com/RifqiCah" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group transition-transform duration-300 hover:scale-110"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-white cursor-pointer group-hover:text-gray-300 transition-colors duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 448 512"
@@ -48,9 +60,15 @@ export default function HomeSection() {
                 </svg>
               </div>
             </a>
-             {/* Ikon Instagram */}
-             <a href="https://www.instagram.com/rif_qifiki/" target="_blank" rel="noopener noreferrer">
-              <div className="w-8 h-8 mt-4 text-pink-500">
+
+            {/* Ikon Instagram */}
+            <a 
+              href="https://www.instagram.com/rif_qifiki/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group transition-transform duration-300 hover:scale-110"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-pink-500 cursor-pointer group-hover:text-pink-400 transition-colors duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 448 512"
@@ -61,8 +79,13 @@ export default function HomeSection() {
                 </svg>
               </div>
             </a>
-             <a href="mailto:namakamu@gmail.com">
-              <div className="w-9 h-8 mt-4 text-white cursor-pointer">
+
+            {/* Ikon Email */}
+            <a 
+              href="mailto:namakamu@gmail.com"
+              className="group transition-transform duration-300 hover:scale-110"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-11 lg:h-10 text-white cursor-pointer group-hover:text-gray-300 transition-colors duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 448 512"
@@ -73,18 +96,20 @@ export default function HomeSection() {
                 </svg>
               </div>
             </a>
-
           </div>
         </div>
-          
 
         {/* Kanan - Gambar */}
-        <div className="w-full md:w-1/2 flex justify-center mt-6 md:mt-0">
-          <img
-            src="/home-3.jpg"
-            alt="Foto Fiki"
-            className="w-60 h-60 md:w-80 md:h-80 object-cover rounded-full shadow-lg shadow-blue-500"
-          />
+        <div className="w-full lg:w-1/2 flex justify-center order-first lg:order-last">
+          <div className="relative group">
+            <img
+              src="/home-3.jpg"
+              alt="Foto Fiki"
+              className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 object-cover rounded-full shadow-lg shadow-blue-500 transition-transform duration-300 group-hover:scale-105"
+            />
+            {/* Optional: Add a subtle overlay effect */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
         </div>
       </div>
     </section>

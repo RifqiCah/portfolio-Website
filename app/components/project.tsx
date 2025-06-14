@@ -21,15 +21,29 @@ interface Project {
   technologies: string[];
   images: string[];
   githubLink: string;
-  
 }
 
 // Projects data array
 const projects: Project[] = [
   {
-    title: "Healthcare - Symptomps Website",
+    title: "Money_plus",
     location: "Brawijaya University",
-    period: "August 2023 - December 2023",
+    period: "June 2025",
+    description: "This is my portfolio website include my professional experience, project, education and some articel",
+    technologies: ["Tailwind CSS","JavaScript","PHP","Laravel"],
+    images: [
+      "/money1.jpeg", 
+      "/money2.jpeg", 
+      "/money3.jpeg",
+      "/money4.jpeg",
+      "/money5.jpeg"
+    ],
+    githubLink: "https://github.com/RifqiCah/money_plus.git"
+  },
+  {
+    title: "Healthcare",
+    location: "Brawijaya University",
+    period: "Mey 2025 - June 2025",
     description: "This is my portfolio website include my professional experience, project, education and some articel",
     technologies: ["Tailwind CSS","JavaScript","TypeScript","NextJs","ReactJs"],
     images: [
@@ -71,7 +85,7 @@ const projects: Project[] = [
     title: "UNITE: Innovative Pokémon game",
     location: "Brawijaya University",
     period: "August 2023 - December 2023",
-    description: "UNITE is an innovative Pokémon game. This game features various exciting elements, including the ability to save and load progress, battle with Pokémon, level them up, evolve them, and use different items to enhance their strength",
+    description: "UNITE is an innovative Pokémon game. This game features various elements, including the ability to save and load progress, and battle ",
     technologies: ["Java", "GUI"],
     images: [
       "/1-unite.jpg", 
@@ -88,45 +102,75 @@ export default function ProjectSection() {
   return (
     <section 
       id="projects" 
-      className="w-full min-h-screen flex items-center justify-center bg-[#1A1A1D] p-6"
+      className="w-full min-h-screen flex items-center justify-center bg-[#1A1A1D] p-4 sm:p-6 lg:p-8"
     >
-      <div className="max-w-5xl w-full">
+      <div className="max-w-7xl w-full">
         <motion.h2 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl font-bold mb-12 text-center text-[#00ADB5]"
+          className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 sm:mb-10 lg:mb-12 text-center text-[#00ADB5]"
         >
           My Projects
         </motion.h2>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-8">
           {/* Project List */}
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="space-y-6"
+            className="order-2 lg:order-1"
           >
-            {projects.map((project, index) => (
-              <motion.div 
-                key={index}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`
-                  cursor-pointer p-6 rounded-xl transition-all duration-300
-                  ${selectedProject === project 
-                    ? 'bg-[#00ADB5] text-[#222831]' 
-                    : 'bg-[#393E46] text-[#EEEEEE] hover:bg-[#00ADB5]/20'}
-                `}
-                onClick={() => setSelectedProject(project)}
-              >
-                <div className="flex items-center mb-2">
-                  <ImageIcon className="mr-3 w-6 h-6" />
-                  <h3 className="text-xl font-semibold">{project.title}</h3>
-                </div>
-              </motion.div>
-            ))}
+            {/* Mobile/Tablet Horizontal Scroll */}
+            <div className="lg:hidden">
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-[#00ADB5] scrollbar-track-[#393E46]">
+                {projects.map((project, index) => (
+                  <motion.div 
+                    key={index}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`
+                      cursor-pointer p-4 rounded-xl transition-all duration-300 min-w-[250px] sm:min-w-[300px]
+                      ${selectedProject === project 
+                        ? 'bg-[#00ADB5] text-[#222831]' 
+                        : 'bg-[#393E46] text-[#EEEEEE] hover:bg-[#00ADB5]/20'}
+                    `}
+                    onClick={() => setSelectedProject(project)}
+                  >
+                    <div className="flex items-center mb-2">
+                      <ImageIcon className="mr-2 w-5 h-5" />
+                      <h3 className="text-lg font-semibold truncate">{project.title}</h3>
+                    </div>
+                    <p className="text-sm opacity-80 line-clamp-2">{project.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Desktop Vertical List */}
+            <div className="hidden lg:block space-y-4">
+              {projects.map((project, index) => (
+                <motion.div 
+                  key={index}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`
+                    cursor-pointer p-6 rounded-xl transition-all duration-300
+                    ${selectedProject === project 
+                      ? 'bg-[#00ADB5] text-[#222831]' 
+                      : 'bg-[#393E46] text-[#EEEEEE] hover:bg-[#00ADB5]/20'}
+                  `}
+                  onClick={() => setSelectedProject(project)}
+                >
+                  <div className="flex items-center mb-2">
+                    <ImageIcon className="mr-3 w-6 h-6" />
+                    <h3 className="text-xl font-semibold">{project.title}</h3>
+                  </div>
+                  <p className="text-sm opacity-80 line-clamp-2">{project.description}</p>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
 
           {/* Project Details */}
@@ -134,7 +178,7 @@ export default function ProjectSection() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-[#393E46] rounded-xl p-8"
+            className="bg-[#393E46] rounded-xl p-4 sm:p-6 lg:p-8 order-1 lg:order-2"
           >
             <AnimatePresence mode="wait">
               {selectedProject ? (
@@ -145,19 +189,18 @@ export default function ProjectSection() {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div>
-                    <h3 className="text-2xl font-bold text-[#00ADB5] mb-1">
+                  <div className="mb-4 sm:mb-6">
+                    <h3 className="text-xl sm:text-2xl font-bold text-[#00ADB5] mb-2">
                       {selectedProject.title}
                     </h3>
-                    <div className="text-sm text-[#EEEEEE] mb-4">
+                    <div className="text-sm text-[#EEEEEE]">
                       <p>{selectedProject.location}</p>
                       <p className="text-[#EEEEEE]/70">{selectedProject.period}</p>
                     </div>
                   </div>
 
-                  
                   {/* Project Image Carousel */}
-                  <div className="mb-6 rounded-xl overflow-hidden shadow-lg relative">
+                  <div className="mb-4 sm:mb-6 rounded-xl overflow-hidden shadow-lg relative">
                     <Swiper
                       modules={[Navigation, Pagination]}
                       spaceBetween={10}
@@ -174,37 +217,38 @@ export default function ProjectSection() {
                     >
                       {selectedProject.images.map((img, index) => (
                         <SwiperSlide key={index}>
-                          <Image 
-                            src={img} 
-                            alt={`${selectedProject.title} screenshot ${index + 1}`}
-                            width={600}
-                            height={400}
-                            className="w-full h-auto object-cover"
-                          />
+                          <div className="aspect-[4/3] sm:aspect-[16/10] relative">
+                            <Image 
+                              src={img} 
+                              alt={`${selectedProject.title} screenshot ${index + 1}`}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
                         </SwiperSlide>
                       ))}
                       
-                      {/* Custom Navigation */}
-                      <div className="swiper-button-prev absolute top-1/2 left-2 z-10 bg-[#00ADB5]/50 rounded-full p-1 -translate-y-1/2">
-                        <ChevronLeft className="text-white" />
+                      {/* Custom Navigation - Hidden on mobile */}
+                      <div className="swiper-button-prev hidden sm:flex absolute top-1/2 left-2 z-10 bg-[#00ADB5]/50 rounded-full p-2 -translate-y-1/2 items-center justify-center">
+                        <ChevronLeft className="text-white w-5 h-5" />
                       </div>
-                      <div className="swiper-button-next absolute top-1/2 right-2 z-10 bg-[#00ADB5]/50 rounded-full p-1 -translate-y-1/2">
-                        <ChevronRight className="text-white" />
+                      <div className="swiper-button-next hidden sm:flex absolute top-1/2 right-2 z-10 bg-[#00ADB5]/50 rounded-full p-2 -translate-y-1/2 items-center justify-center">
+                        <ChevronRight className="text-white w-5 h-5" />
                       </div>
                     </Swiper>
                   </div>
 
                   {/* Project Description */}
-                  <p className="text-[#EEEEEE] mb-6">
+                  <p className="text-[#EEEEEE] mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed">
                     {selectedProject.description}
                   </p>
 
                   {/* Technologies */}
-                  <div className="flex flex-wrap gap-2 mb-6">
+                  <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
                     {selectedProject.technologies.map((tech, index) => (
                       <span 
                         key={index} 
-                        className="bg-[#00ADB5]/20 text-[#00ADB5] px-3 py-1 rounded-full text-xs"
+                        className="bg-[#00ADB5]/20 text-[#00ADB5] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm"
                       >
                         {tech}
                       </span>
@@ -216,15 +260,15 @@ export default function ProjectSection() {
                     href={selectedProject.githubLink} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-[#00ADB5] text-[#222831] px-4 py-2 rounded-full hover:bg-[#00ADB5]/80 transition-colors"
+                    className="flex items-center justify-center bg-[#00ADB5] text-[#222831] px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-[#00ADB5]/80 transition-colors text-sm sm:text-base font-medium"
                   >
-                    <Github className="mr-2" />
+                    <Github className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                     View on GitHub
                   </Link>
                 </motion.div>
               ) : (
-                <div className="text-center text-[#EEEEEE] opacity-50">
-                  Click on a project to view details
+                <div className="text-center text-[#EEEEEE] opacity-50 py-8">
+                  <p className="text-sm sm:text-base">Click on a project to view details</p>
                 </div>
               )}
             </AnimatePresence>
