@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 
 interface Skill {
@@ -22,72 +22,136 @@ const SkillSection: React.FC = () => {
     { name: 'Next.js', icon: '/icons/nextdotjs.svg' },
     { name: 'Node.js', icon: '/icons/nodedotjs.svg' },
     { name: 'Laravel', icon: '/icons/laravel.svg' },
-    // { name: 'Django', icon: '/icons/django.svg' },
     
     // Database
     { name: 'MySQL', icon: '/icons/mysql.svg' },
   ];
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
+  
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [currentTranslate, setCurrentTranslate] = useState(0);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
 
-  useEffect(() => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-
-    // Duplicate items for infinite scroll
-    const scrollerInner = scroller.querySelector('.scroller-inner') as HTMLElement;
-    if (!scrollerInner) return;
-
-    const scrollerContent = Array.from(scrollerInner.children);
+  // Auto scroll animation
+  const animate = useCallback(() => {
+    if (!scrollerRef.current || !isAutoScrolling || isDragging) return;
     
-    // Clone items for seamless loop
-    scrollerContent.forEach((item) => {
-      const duplicatedItem = item.cloneNode(true) as HTMLElement;
-      duplicatedItem.setAttribute('aria-hidden', 'true');
-      scrollerInner.appendChild(duplicatedItem);
+    setCurrentTranslate(prev => {
+      const newTranslate = prev - 1; // Speed: 1px per frame
+      const maxTranslate = -(skills.length * 136); // 120px width + 16px gap
+      
+      // Reset for infinite loop
+      if (newTranslate <= maxTranslate) {
+        return 0;
+      }
+      
+      if (scrollerRef.current) {
+        scrollerRef.current.style.transform = `translateX(${newTranslate}px)`;
+      }
+      
+      return newTranslate;
     });
-
-    // Auto scroll animation
-    let scrollPosition = 0;
-    const scrollSpeed = 0.5; // Adjust speed here
-
-    const animate = () => {
-      scrollPosition += scrollSpeed;
-      
-      if (scrollPosition >= scrollerInner.scrollWidth / 2) {
-        scrollPosition = 0;
-      }
-      
-      scrollerInner.style.transform = `translateX(-${scrollPosition}px)`;
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    // Start animation
+    
     animationRef.current = requestAnimationFrame(animate);
+  }, [isAutoScrolling, isDragging, skills.length]);
 
-    // Pause on hover
-    const handleMouseEnter = () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-
-    const handleMouseLeave = () => {
+  // Start auto scroll
+  useEffect(() => {
+    if (isAutoScrolling && !isDragging) {
       animationRef.current = requestAnimationFrame(animate);
-    };
-
-    scroller.addEventListener('mouseenter', handleMouseEnter);
-    scroller.addEventListener('mouseleave', handleMouseLeave);
-
+    }
+    
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      scroller.removeEventListener('mouseenter', handleMouseEnter);
-      scroller.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, []);
+  }, [animate, isAutoScrolling, isDragging]);
+
+  // Mouse events
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    
+    setIsDragging(true);
+    setIsAutoScrolling(false);
+    setStartX(e.pageX - containerRef.current.offsetLeft);
+    setScrollLeft(currentTranslate);
+    
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current || !scrollerRef.current) return;
+    
+    e.preventDefault();
+    const x = e.pageX - containerRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Multiply for faster scroll
+    const newTranslate = scrollLeft + walk;
+    
+    setCurrentTranslate(newTranslate);
+    scrollerRef.current.style.transform = `translateX(${newTranslate}px)`;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    // Resume auto scroll after 2 seconds
+    setTimeout(() => {
+      setIsAutoScrolling(true);
+    }, 2000);
+  };
+
+  // Touch events
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+    
+    setIsDragging(true);
+    setIsAutoScrolling(false);
+    setStartX(e.touches[0].pageX - containerRef.current.offsetLeft);
+    setScrollLeft(currentTranslate);
+    
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !containerRef.current || !scrollerRef.current) return;
+    
+    const x = e.touches[0].pageX - containerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    const newTranslate = scrollLeft + walk;
+    
+    setCurrentTranslate(newTranslate);
+    scrollerRef.current.style.transform = `translateX(${newTranslate}px)`;
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    // Resume auto scroll after 2 seconds
+    setTimeout(() => {
+      setIsAutoScrolling(true);
+    }, 2000);
+  };
+
+  // Pause/Resume on hover
+  const handleMouseEnter = () => {
+    if (!isDragging) {
+      setIsAutoScrolling(false);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isDragging) {
+      setIsAutoScrolling(true);
+    }
+  };
 
   return (
     <section id="skill" className="min-h-screen bg-[#222831] text-white py-20 px-4">
@@ -102,26 +166,67 @@ const SkillSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Infinite Scroll Skills */}
-        <div className="relative overflow-hidden">
-          {/* First Row */}
+        {/* Interactive Slider */}
+        <div className="relative">
+          {/* Row 1 - Left to Right */}
           <div 
-            ref={scrollerRef}
-            className="scroller mb-8 overflow-hidden"
-            style={{ maskImage: 'linear-gradient(90deg, transparent, white 20%, white 80%, transparent)' }}
+            ref={containerRef}
+            className="overflow-hidden cursor-grab active:cursor-grabbing mb-8 select-none"
+            style={{ 
+              maskImage: 'linear-gradient(90deg, transparent 0%, white 10%, white 90%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, white 10%, white 90%, transparent 100%)'
+            }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+            onMouseEnter={handleMouseEnter}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
-            <div className="scroller-inner flex gap-8 w-max animate-none">
-              {skills.slice(0, 6).map((skill, index) => (
+            <div 
+              ref={scrollerRef}
+              className="flex gap-4 transition-transform duration-300 ease-out"
+              style={{ 
+                width: 'max-content',
+                transform: `translateX(${currentTranslate}px)`
+              }}
+            >
+              {/* Original skills */}
+              {skills.map((skill, index) => (
                 <div
-                  key={`${skill.name}-${index}`}
-                  className="flex flex-col items-center p-6 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-all duration-300 hover:scale-105 min-w-[120px]"
+                  key={`original-${skill.name}-${index}`}
+                  className="flex flex-col items-center p-4 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-all duration-300 hover:scale-105 min-w-[120px] flex-shrink-0"
                 >
                   <div className="w-12 h-12 mb-3 relative">
                     <Image
                       src={skill.icon}
                       alt={skill.name}
                       fill
-                      className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                      className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300 pointer-events-none"
+                      draggable={false}
+                    />
+                  </div>
+                  <span className="text-sm text-gray-300 text-center whitespace-nowrap">
+                    {skill.name}
+                  </span>
+                </div>
+              ))}
+              
+              {/* Duplicated skills for infinite effect */}
+              {skills.map((skill, index) => (
+                <div
+                  key={`duplicate-${skill.name}-${index}`}
+                  className="flex flex-col items-center p-4 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-all duration-300 hover:scale-105 min-w-[120px] flex-shrink-0"
+                >
+                  <div className="w-12 h-12 mb-3 relative">
+                    <Image
+                      src={skill.icon}
+                      alt={skill.name}
+                      fill
+                      className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300 pointer-events-none"
+                      draggable={false}
                     />
                   </div>
                   <span className="text-sm text-gray-300 text-center whitespace-nowrap">
@@ -132,19 +237,19 @@ const SkillSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Second Row (Reverse Direction) */}
+          {/* Row 2 - Right to Left (Static CSS Animation) */}
           <div 
-            className="scroller overflow-hidden"
+            className="overflow-hidden mb-8"
             style={{ 
-              maskImage: 'linear-gradient(90deg, transparent, white 20%, white 80%, transparent)',
-              animation: 'scroll-reverse 20s linear infinite'
+              maskImage: 'linear-gradient(90deg, transparent 0%, white 10%, white 90%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, white 10%, white 90%, transparent 100%)'
             }}
           >
-            <div className="scroller-inner flex gap-8 w-max">
-              {[...skills.slice(6), ...skills.slice(6)].map((skill, index) => (
+            <div className="flex gap-4 animate-scroll-reverse">
+              {[...skills, ...skills, ...skills].map((skill, index) => (
                 <div
-                  key={`${skill.name}-row2-${index}`}
-                  className="flex flex-col items-center p-6 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-all duration-300 hover:scale-105 min-w-[120px]"
+                  key={`row2-${skill.name}-${index}`}
+                  className="flex flex-col items-center p-4 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-all duration-300 hover:scale-105 min-w-[120px] flex-shrink-0"
                 >
                   <div className="w-12 h-12 mb-3 relative">
                     <Image
@@ -152,6 +257,7 @@ const SkillSection: React.FC = () => {
                       alt={skill.name}
                       fill
                       className="object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                      draggable={false}
                     />
                   </div>
                   <span className="text-sm text-gray-300 text-center whitespace-nowrap">
@@ -163,10 +269,10 @@ const SkillSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Touch Instructions */}
+        {/* Instructions */}
         <div className="text-center mt-8">
           <p className="text-gray-500 text-sm">
-            Hover to pause • Touch and drag on mobile
+            {isDragging ? "🖱️ Dragging..." : isAutoScrolling ? "✋ Hover to pause • 👆 Drag to control" : "⏸️ Paused - Will resume in 2s"}
           </p>
         </div>
       </div>
@@ -181,7 +287,11 @@ const SkillSection: React.FC = () => {
           }
         }
         
-        .scroller:hover .scroller-inner {
+        .animate-scroll-reverse {
+          animation: scroll-reverse 25s linear infinite;
+        }
+        
+        .animate-scroll-reverse:hover {
           animation-play-state: paused;
         }
       `}</style>
