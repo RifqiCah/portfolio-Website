@@ -5,6 +5,26 @@ import { useState, useEffect } from 'react';
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  // Scroll Progress Bar
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      setScrollProgress(scrollPercent);
+      
+      // Debug - hapus setelah berhasil
+      console.log('Scroll Progress:', scrollPercent.toFixed(1) + '%');
+    };
+
+    // Initial call
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Intersection Observer Setup
   useEffect(() => {
@@ -57,102 +77,116 @@ export default function Navbar() {
     { id: 'home', label: 'Home', href: '#home' },
     { id: 'education', label: 'Education', href: '#education' },
     { id: 'skill', label: 'Skill', href: '#skill' },
-    { id: 'experience', label: 'Experience', href: '#experience' },
+    // { id: 'experience', label: 'Experience', href: '#experience' },
     { id: 'projects', label: 'Projects', href: '#projects' }
   ];
 
   return (
-    <nav 
-      className="fixed z-50 top-0 left-0 w-full text-white p-4 sm:p-6 flex justify-between items-center"
-      style={{ backgroundColor: "var(--secondary-bg)" }}
-    >
-      {/* Logo/Brand - Responsive positioning */}
-      <h1 className="text-xl font-bold ml-4 sm:ml-8 md:ml-16 lg:ml-24">
-        Rifqi Cahyono
-      </h1>
-
-      {/* Mobile Menu Button */}
-      <button 
-        className="block sm:hidden mr-4 z-60"
-        onClick={toggleMobileMenu}
-        aria-label="Toggle mobile menu"
-      >
-        {isMobileMenuOpen ? (
-          <FaTimes className="text-3xl text-[#EEEEEE] cursor-pointer transition-transform duration-300" />
-        ) : (
-          <FaBars className="text-3xl text-[#EEEEEE] cursor-pointer transition-transform duration-300" />
-        )}
-      </button>
-
-      {/* Desktop Navigation */}
-      <ul className="hidden sm:flex gap-2 md:gap-3 lg:gap-4 mr-4 sm:mr-8 md:mr-16 lg:mr-24">
-        {navItems.map((item) => (
-          <li
-            key={item.id}
-            className={`relative cursor-pointer border-2 rounded-xl px-3 md:px-4 py-1
-              overflow-hidden transition-colors duration-500 ease-in-out
-              before:absolute before:top-0 before:left-0 before:w-0 before:h-full
-              before:bg-[#00ADB5] before:transition-all before:duration-700
-              hover:before:w-full hover:text-[#222831] hover:border-[#222831]
-              ${activeSection === item.id
-                ? 'bg-[#00ADB5] text-[#222831] border-[#222831]'
-                : 'bg-white text-[#222831] border-[#222831]'}
-            `}
-          >
-            <a
-              href={item.href}
-              className="relative z-10 whitespace-nowrap"
-              onClick={() => setActiveSection(item.id)}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      {/* Mobile Navigation Menu */}
-      <div 
-        className={`fixed top-0 right-0 h-full w-64 sm:hidden transform transition-transform duration-300 ease-in-out z-40 ${
-          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+    <>
+      <nav 
+        className="fixed z-50 top-0 left-0 w-full text-white px-4 sm:px-6 py-4 sm:py-6 pb-0 flex justify-between items-center"
         style={{ backgroundColor: "var(--secondary-bg)" }}
       >
-        {/* Mobile menu content */}
-        <div className="flex flex-col pt-20 px-6">
-          <ul className="flex flex-col gap-4">
-            {navItems.map((item) => (
-              <li
-                key={item.id}
-                className={`relative cursor-pointer border-2 rounded-xl px-4 py-3
-                  overflow-hidden transition-colors duration-500 ease-in-out
-                  before:absolute before:top-0 before:left-0 before:w-0 before:h-full
-                  before:bg-[#00ADB5] before:transition-all before:duration-700
-                  hover:before:w-full hover:text-[#222831] hover:border-[#222831]
-                  ${activeSection === item.id
-                    ? 'bg-[#00ADB5] text-[#222831] border-[#222831]'
-                    : 'bg-white text-[#222831] border-[#222831]'}
-                `}
-              >
-                <a
-                  href={item.href}
-                  className="relative z-10 block text-center"
-                  onClick={() => handleMobileMenuClick(item.id)}
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+        {/* Logo/Brand - Responsive positioning */}
+        <h1 className="text-xl font-bold ml-4 sm:ml-8 md:ml-16 lg:ml-24">
+          Rifqi Cahyono
+        </h1>
 
-      {/* Mobile Menu Backdrop - Transparent */}
-      {isMobileMenuOpen && (
+        {/* Mobile Menu Button */}
+        <button 
+          className="block sm:hidden mr-4 z-60"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle mobile menu"
+        >
+          {isMobileMenuOpen ? (
+            <FaTimes className="text-3xl text-[#EEEEEE] cursor-pointer transition-transform duration-300" />
+          ) : (
+            <FaBars className="text-3xl text-[#EEEEEE] cursor-pointer transition-transform duration-300" />
+          )}
+        </button>
+
+        {/* Desktop Navigation */}
+        <ul className="hidden sm:flex gap-2 md:gap-3 lg:gap-4 mr-4 sm:mr-8 md:mr-16 lg:mr-24">
+          {navItems.map((item) => (
+            <li
+              key={item.id}
+              className={`relative cursor-pointer border-2 rounded-xl px-3 md:px-4 py-1
+                overflow-hidden transition-colors duration-500 ease-in-out
+                before:absolute before:top-0 before:left-0 before:w-0 before:h-full
+                before:bg-[#00ADB5] before:transition-all before:duration-700
+                hover:before:w-full hover:text-[#222831] hover:border-[#222831]
+                ${activeSection === item.id
+                  ? 'bg-[#00ADB5] text-[#222831] border-[#222831]'
+                  : 'bg-white text-[#222831] border-[#222831]'}
+              `}
+            >
+              <a
+                href={item.href}
+                className="relative z-10 whitespace-nowrap"
+                onClick={() => setActiveSection(item.id)}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        {/* Mobile Navigation Menu */}
         <div 
-          className="fixed inset-0 bg-transparent z-30 sm:hidden"
-          onClick={() => setIsMobileMenuOpen(false)}
+          className={`fixed top-0 right-0 h-full w-64 sm:hidden transform transition-transform duration-300 ease-in-out z-40 ${
+            isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+          style={{ backgroundColor: "var(--secondary-bg)" }}
+        >
+          {/* Mobile menu content */}
+          <div className="flex flex-col pt-20 px-6">
+            <ul className="flex flex-col gap-4">
+              {navItems.map((item) => (
+                <li
+                  key={item.id}
+                  className={`relative cursor-pointer border-2 rounded-xl px-4 py-3
+                    overflow-hidden transition-colors duration-500 ease-in-out
+                    before:absolute before:top-0 before:left-0 before:w-0 before:h-full
+                    before:bg-[#00ADB5] before:transition-all before:duration-700
+                    hover:before:w-full hover:text-[#222831] hover:border-[#222831]
+                    ${activeSection === item.id
+                      ? 'bg-[#00ADB5] text-[#222831] border-[#222831]'
+                      : 'bg-white text-[#222831] border-[#222831]'}
+                  `}
+                >
+                  <a
+                    href={item.href}
+                    className="relative z-10 block text-center"
+                    onClick={() => handleMobileMenuClick(item.id)}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Mobile Menu Backdrop - Transparent */}
+        {isMobileMenuOpen && (
+          <div 
+            className="fixed inset-0 bg-transparent z-30 sm:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+            {/* Progress bar di dalam navbar - di bagian paling bawah */}
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-800/20">
+        <div 
+          className="h-full bg-gradient-to-r from-[#00ADB5] to-[#00C9D7] transition-all duration-150 ease-out"
+          style={{ 
+            width: `${Math.min(scrollProgress, 100)}%`
+          }}
         />
-      )}
+      </div>
     </nav>
+  
+
+    
+    </>
   );
 }

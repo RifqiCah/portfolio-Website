@@ -348,7 +348,7 @@ const SkillSection: React.FC = () => {
 
   const SkillCard = ({ skill, index }: { skill: Skill; index: number }) => (
     <div
-      className="flex flex-col items-center p-5 rounded-xl bg-gradient-to-br from-gray-800/60 to-gray-900/60 hover:from-gray-700/80 hover:to-gray-800/80 transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-[130px] flex-shrink-0 border border-gray-700/50 hover:border-gray-600/70"
+      className="flex flex-col items-center p-5 rounded-xl bg-gradient-to-br from-gray-800/60 to-gray-900/60 hover:from-[#00adb5]/50 hover:to-[#00b8c2]/50 transition-all duration-300 hover:scale-105 hover:shadow-lg min-w-[130px] flex-shrink-0 border border-gray-700/50 hover:border-[#00adb5]/40"
     >
       <div className="w-14 h-14 mb-4 relative">
         <Image
@@ -371,11 +371,9 @@ const SkillSection: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Technical Skills
+            What I Do?
           </h2>
-          <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            Technologies and tools I work with to build amazing projects
-          </p>
+          
         </div>
 
         {/* Programming Languages Row */}
@@ -424,12 +422,13 @@ const SkillSection: React.FC = () => {
               {programmingLanguages.map((skill, index) => (
                 <SkillCard key={`lang-set3-${skill.name}-${index}`} skill={skill} index={index} />
               ))}
+              
             </div>
           </div>
           
           <div className="text-center mt-4">
             <p className="text-gray-500 text-xs">
-              {isDragging1 ? "🖱️ Dragging..." : isAutoScrolling1 ? "← Auto-scrolling • Hover to pause • Drag to control" : "⏸️ Paused - Will resume in 2s"}
+              {isDragging1 ? "Dragging..." : isAutoScrolling1 ? "← Auto-scrolling • Hover to pause • Drag to control" : "⏸Paused - Will resume in 2s"}
             </p>
           </div>
         </div>
@@ -485,7 +484,7 @@ const SkillSection: React.FC = () => {
           
           <div className="text-center mt-4">
             <p className="text-gray-500 text-xs">
-              {isDragging2 ? "🖱️ Dragging..." : isAutoScrolling2 ? "Auto-scrolling → • Hover to pause • Drag to control" : "⏸️ Paused - Will resume in 2s"}
+              {isDragging2 ? "Dragging..." : isAutoScrolling2 ? "Auto-scrolling → • Hover to pause • Drag to control" : "⏸Paused - Will resume in 2s"}
             </p>
           </div>
         </div>

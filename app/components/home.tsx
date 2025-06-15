@@ -7,28 +7,41 @@ export default function HomeSection() {
         
         {/* Kiri - Teks */}
         <div className="w-full lg:w-1/2 text-center lg:text-left px-4 sm:px-6 lg:px-8 xl:px-12">
+          {/* Nama dengan fade-down */}
           <h1
+            data-aos="fade-down"
+            data-aos-duration="1000"
             className="text-3xl sm:text-4xl lg:text-4xl xl:text-4xl font-bold mb-4 lg:mb-6"
             style={{ color: "#00ADB5" }}
           >
             Hi, I'm Fiki!
           </h1>
 
+          {/* Deskripsi dengan fade-up delay */}
           <p
+            data-aos="fade-up"
+            data-aos-delay="300"
+            data-aos-duration="1000"
             className="text-base sm:text-lg lg:text-xl xl:text-xl mb-6 lg:mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0"
             style={{ color: "#EEEEEE" }}
           >
             I am an undergraduate student in Informatics Engineering at Universitas Brawijaya with a deep interest in AI/ML Engineer, Data Science and Full Stack Enthusiast
           </p>
 
-          {/* Social Media Icons */}
-          <div className="flex flex-row gap-3 sm:gap-4 justify-center lg:justify-start items-center">
+          {/* Social Media Icons - muncul satu per satu */}
+          <div 
+            data-aos="fade-up"
+            data-aos-delay="600"
+            className="flex flex-row gap-3 sm:gap-4 justify-center lg:justify-start items-center"
+          >
             {/* Ikon LinkedIn */}
             <a 
               href="https://www.linkedin.com/in/rifqicahyono" 
               target="_blank" 
               rel="noopener noreferrer"
               className="group transition-transform duration-300 hover:scale-110"
+              data-aos="zoom-in"
+              data-aos-delay="800"
             >
               <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-blue-500 cursor-pointer group-hover:text-blue-400 transition-colors duration-300">
                 <svg
@@ -48,6 +61,8 @@ export default function HomeSection() {
               target="_blank" 
               rel="noopener noreferrer"
               className="group transition-transform duration-300 hover:scale-110"
+              data-aos="zoom-in"
+              data-aos-delay="900"
             >
               <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-white cursor-pointer group-hover:text-gray-300 transition-colors duration-300">
                 <svg
@@ -67,6 +82,8 @@ export default function HomeSection() {
               target="_blank" 
               rel="noopener noreferrer"
               className="group transition-transform duration-300 hover:scale-110"
+              data-aos="zoom-in"
+              data-aos-delay="1000"
             >
               <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 text-pink-500 cursor-pointer group-hover:text-pink-400 transition-colors duration-300">
                 <svg
@@ -84,6 +101,8 @@ export default function HomeSection() {
             <a 
               href="mailto:namakamu@gmail.com"
               className="group transition-transform duration-300 hover:scale-110"
+              data-aos="zoom-in"
+              data-aos-delay="1100"
             >
               <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-11 lg:h-10 text-white cursor-pointer group-hover:text-gray-300 transition-colors duration-300">
                 <svg
@@ -101,7 +120,12 @@ export default function HomeSection() {
 
         {/* Kanan - Gambar */}
         <div className="w-full lg:w-1/2 flex justify-center order-first lg:order-last">
-          <div className="relative group">
+          <div 
+            className="relative group"
+            data-aos="zoom-in"
+            data-aos-delay="400"
+            data-aos-duration="1200"
+          >
             <img
               src="/home-3.jpg"
               alt="Foto Fiki"

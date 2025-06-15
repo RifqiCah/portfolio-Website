@@ -121,9 +121,14 @@ export default function ProjectSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="order-2 lg:order-1"
+            
+          
           >
             {/* Mobile/Tablet Horizontal Scroll */}
-            <div className="lg:hidden">
+            <div className="lg:hidden" data-aos="fade-right"
+                    data-aos-duration="1000"
+                    data-aos-delay="200"
+                    data-aos-anchor-placement="top-bottom">
               <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-[#00ADB5] scrollbar-track-[#393E46]">
                 {projects.map((project, index) => (
                   <motion.div 
@@ -137,6 +142,7 @@ export default function ProjectSection() {
                         : 'bg-[#393E46] text-[#EEEEEE] hover:bg-[#00ADB5]/20'}
                     `}
                     onClick={() => setSelectedProject(project)}
+                    
                   >
                     <div className="flex items-center mb-2">
                       <ImageIcon className="mr-2 w-5 h-5" />
@@ -199,43 +205,55 @@ export default function ProjectSection() {
                     </div>
                   </div>
 
-                  {/* Project Image Carousel */}
-                  <div className="mb-4 sm:mb-6 rounded-xl overflow-hidden shadow-lg relative">
-                    <Swiper
-                      modules={[Navigation, Pagination]}
-                      spaceBetween={10}
-                      slidesPerView={1}
-                      navigation={{
-                        prevEl: '.swiper-button-prev',
-                        nextEl: '.swiper-button-next',
-                      }}
-                      pagination={{ 
-                        clickable: true,
-                        dynamicBullets: true,
-                      }}
-                      className="w-full"
-                    >
-                      {selectedProject.images.map((img, index) => (
-                        <SwiperSlide key={index}>
-                          <div className="aspect-[4/3] sm:aspect-[16/10] relative">
-                            <Image 
-                              src={img} 
-                              alt={`${selectedProject.title} screenshot ${index + 1}`}
-                              fill
-                              className="object-cover"
-                            />
-                          </div>
-                        </SwiperSlide>
-                      ))}
+                  {/* Project Image Carousel - IMPROVED */}
+                  <div className="mb-4 sm:mb-6 rounded-xl overflow-hidden shadow-2xl relative bg-gradient-to-br from-gray-900 to-gray-800 p-2">
+                    <div className="relative group">
+                      <Swiper
+                        modules={[Navigation, Pagination]}
+                        spaceBetween={0}
+                        slidesPerView={1}
+                        navigation={{
+                          prevEl: '.custom-swiper-button-prev',
+                          nextEl: '.custom-swiper-button-next',
+                        }}
+                        pagination={{ 
+                          clickable: true,
+                          dynamicBullets: true,
+                          el: '.custom-pagination',
+                        }}
+                        className="w-full rounded-lg overflow-hidden"
+                      >
+                        {selectedProject.images.map((img, index) => (
+                          <SwiperSlide key={index}>
+                            {/* IMPROVED IMAGE CONTAINER */}
+                            <div className="relative bg-white rounded-lg overflow-hidden shadow-lg">
+                              <div className="aspect-[16/9] relative">
+                                <Image 
+                                  src={img} 
+                                  alt={`${selectedProject.title} screenshot ${index + 1}`}
+                                  fill
+                                  className="object-contain bg-white"
+                                  sizes="(max-width: 768px) 100vw, 50vw"
+                                />
+                              </div>
+                              {/* Image overlay with subtle gradient */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent pointer-events-none"></div>
+                            </div>
+                          </SwiperSlide>
+                        ))}
+                      </Swiper>
                       
-                      {/* Custom Navigation - Hidden on mobile */}
-                      <div className="swiper-button-prev hidden sm:flex absolute top-1/2 left-2 z-10 bg-[#00ADB5]/50 rounded-full p-2 -translate-y-1/2 items-center justify-center">
-                        <ChevronLeft className="text-white w-5 h-5" />
-                      </div>
-                      <div className="swiper-button-next hidden sm:flex absolute top-1/2 right-2 z-10 bg-[#00ADB5]/50 rounded-full p-2 -translate-y-1/2 items-center justify-center">
-                        <ChevronRight className="text-white w-5 h-5" />
-                      </div>
-                    </Swiper>
+                      {/* IMPROVED CUSTOM NAVIGATION BUTTONS */}
+                      <button className="custom-swiper-button-prev absolute top-1/2 left-4 z-20 -translate-y-1/2 w-12 h-12 bg-[#00ADB5]/90 hover:bg-[#00ADB5] backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-lg border-2 border-white/20">
+                        <ChevronLeft className="text-white w-6 h-6" />
+                      </button>
+                      <button className="custom-swiper-button-next absolute top-1/2 right-4 z-20 -translate-y-1/2 w-12 h-12 bg-[#00ADB5]/90 hover:bg-[#00ADB5] backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100 hover:scale-110 shadow-lg border-2 border-white/20">
+                        <ChevronRight className="text-white w-6 h-6" />
+                      </button>
+                      
+                      {/* IMPROVED CUSTOM PAGINATION */}
+                      <div className="custom-pagination absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center space-x-2 z-10"></div>
+                    </div>
                   </div>
 
                   {/* Project Description */}
@@ -248,7 +266,7 @@ export default function ProjectSection() {
                     {selectedProject.technologies.map((tech, index) => (
                       <span 
                         key={index} 
-                        className="bg-[#00ADB5]/20 text-[#00ADB5] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm"
+                        className="bg-[#00ADB5]/20 text-[#00ADB5] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm border border-[#00ADB5]/30 hover:bg-[#00ADB5]/30 transition-colors"
                       >
                         {tech}
                       </span>
@@ -260,7 +278,7 @@ export default function ProjectSection() {
                     href={selectedProject.githubLink} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center bg-[#00ADB5] text-[#222831] px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-[#00ADB5]/80 transition-colors text-sm sm:text-base font-medium"
+                    className="flex items-center justify-center bg-[#00ADB5] text-[#222831] px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-[#00ADB5]/80 transition-all duration-300 text-sm sm:text-base font-medium hover:scale-105 shadow-lg"
                   >
                     <Github className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
                     View on GitHub
@@ -275,6 +293,28 @@ export default function ProjectSection() {
           </motion.div>
         </div>
       </div>
+
+      {/* Custom Swiper Styles */}
+      <style jsx>{`
+        .custom-pagination .swiper-pagination-bullet {
+          width: 12px;
+          height: 12px;
+          background: rgba(255, 255, 255, 0.4);
+          opacity: 1;
+          transition: all 0.3s ease;
+        }
+        
+        .custom-pagination .swiper-pagination-bullet-active {
+          background: #00ADB5;
+          transform: scale(1.2);
+          box-shadow: 0 0 10px rgba(0, 173, 181, 0.5);
+        }
+        
+        .custom-pagination .swiper-pagination-bullet:hover {
+          background: rgba(0, 173, 181, 0.7);
+          transform: scale(1.1);
+        }
+      `}</style>
     </section>
   );
 }
