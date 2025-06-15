@@ -56,6 +56,7 @@ export default function Navbar() {
   const navItems = [
     { id: 'home', label: 'Home', href: '#home' },
     { id: 'education', label: 'Education', href: '#education' },
+    { id: 'skill', label: 'Skill', href: '#skill' },
     { id: 'experience', label: 'Experience', href: '#experience' },
     { id: 'projects', label: 'Projects', href: '#projects' }
   ];

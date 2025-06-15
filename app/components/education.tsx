@@ -22,7 +22,7 @@ const educationData: EducationItem[] = [
     degree: "High School Natural Science",
     university: "SMA Negeri 2 Jombang",
     period: "July 2021 - June 2023",
-    description: "."
+    description: "Active in organizing scientific papers."
   }
 ];
 
