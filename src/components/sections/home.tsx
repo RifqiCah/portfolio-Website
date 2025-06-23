@@ -77,7 +77,7 @@ export default function HomeSection() {
             </a>
             {/* Ikon Email */}
             <a 
-              href="mailto:namakamu@gmail.com"
+              href="mailto:rifqicahyono265@gmail.com"
               className="group transition-transform duration-300 hover:scale-110"
               data-aos="zoom-in"
               data-aos-delay="1100"
