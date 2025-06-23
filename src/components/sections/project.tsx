@@ -45,7 +45,7 @@ const projects: Project[] = [
             "/images/healthcare/rumahsakit.png",
             "/images/healthcare/artikel.png"
         ],
-        githubLink: "https://github.com/RifqiCah/PengembanganAplikasiWeb.git"
+        githubLink: "https://github.com/rakafdil/healthcare-website"
     },
     {
         title: "Portfolio Website",
@@ -58,7 +58,7 @@ const projects: Project[] = [
           "/images/portfolio/port2.png",
           "/images/portfolio/port3.png"
         ],
-        githubLink: "https://github.com/RifqiCah/PengembanganAplikasiWeb.git"
+        githubLink: "https://github.com/RifqiCah/portfolio-Website"
     },
     {
     title: "Medium Clone",
@@ -84,7 +84,7 @@ const projects: Project[] = [
       "/images/unite/2-unite.jpg",
       "/images/unite/3-unite.jpg",
     ],
-    githubLink: "https://github.com/yourusername/portfolio"
+    githubLink: "https://github.com/RifqiCah/uniteGame"
   }
 ];
 
